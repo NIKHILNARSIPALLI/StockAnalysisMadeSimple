@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/route_manager.dart';
 import 'package:stock_analysis/pages/homepage.dart';
 import 'package:stock_analysis/pages/variables.dart';
-import 'package:get/get.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -45,6 +43,12 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
+  void _reloadPage() {
+    setState(() {
+      // No state variables are changed, just calling setState to trigger a rebuild
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,88 +74,9 @@ class _SearchPageState extends State<SearchPage> {
                   return GestureDetector(
                     onTap: () {
                       //toggleFavorite(parts[0]);
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text(
-                                'Add Tag',
-                                style: TextStyle(
-                                    fontFamily: 'Nexa',
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w900,
-                                    color: Color(0xff6BC669)),
-                              ),
-                              actions: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 10, bottom: 20, right: 5, left: 10),
-                                  child: TextButton(
-                                      onPressed: () {},
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                const Color(0xffFF7777)),
-                                        minimumSize:
-                                            MaterialStateProperty.all<Size>(
-                                                const Size(
-                                                    130, 50)), // Minimum size
-                                        shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                18.0), // Rounded corners
-                                            side: const BorderSide(
-                                                color: Color(0xffBA2C2C),
-                                                width: 4.0), // Border
-                                          ),
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        'Sell',
-                                        style: TextStyle(
-                                            fontFamily: 'Nexa',
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.w900,
-                                            color: Color(0xffBA2C2C)),
-                                      )),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 10, bottom: 20, right: 10, left: 5),
-                                  child: TextButton(
-                                      onPressed: () {},
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all<Color>(
-                                                const Color(0xffA5FFA3)),
-                                        minimumSize:
-                                            MaterialStateProperty.all<Size>(
-                                                const Size(
-                                                    130, 50)), // Minimum size
-                                        shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                18.0), // Rounded corners
-                                            side: const BorderSide(
-                                                color: Color(0xff6BC669),
-                                                width: 4.0), // Border
-                                          ),
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        'BUY',
-                                        style: TextStyle(
-                                            fontFamily: 'Nexa',
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w900,
-                                            color: Color(0xff6BC669)),
-                                      )),
-                                ),
-                              ],
-                            );
-                          });
+                      !favouritelist.contains(parts[0])
+                          ? addfavouritepopup(context, parts[0])
+                          : removefavouritepopup(context, parts[0]);
                     },
                     child: SvgPicture.string(
                       favouritelist.contains(parts[0])
@@ -168,5 +93,228 @@ class _SearchPageState extends State<SearchPage> {
         },
       ),
     );
+  }
+
+// This method shows pop up confirmation to remove an item from favourite list
+  Future<dynamic> removefavouritepopup(BuildContext context, String stockname) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text(
+              'Remove Favourite ?',
+              style: TextStyle(
+                  fontFamily: 'Nexa',
+                  fontSize: 18,
+                  fontWeight: FontWeight.w900,
+                  color: Color.fromARGB(255, 58, 54, 54)),
+            ),
+            content: Text(
+              stockname,
+              style: const TextStyle(
+                  fontFamily: 'Nexa',
+                  fontSize: 17,
+                  fontWeight: FontWeight.w200,
+                  color: Colors.black),
+            ),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10, bottom: 20, right: 15, left: 10),
+                    child: TextButton(
+                        onPressed: () {
+                          // Removing favouritelist item and its corresponding buysell tag list
+                          int removeindex = favouritelist.indexOf(stockname);
+                          favouritelist.removeAt(removeindex);
+                          favouritebuyselllist.removeAt(removeindex);
+                          Navigator.pop(context);
+                          _reloadPage();
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            const Color.fromARGB(255, 162, 11, 11),
+                          ),
+
+                          fixedSize: MaterialStateProperty.all<Size>(
+                              const Size(100, 30)), // Minimum size
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(5.0), // Rounded corners
+                              side: const BorderSide(
+                                  color: Color.fromARGB(177, 186, 44, 44),
+                                  width: 2.5), // Border
+                            ),
+                          ),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Yes',
+                            style: TextStyle(
+                                fontFamily: 'Nexa',
+                                fontSize: 18,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white),
+                          ),
+                        )),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10, bottom: 20, right: 10, left: 15),
+                    child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              const Color.fromARGB(255, 4, 149, 1)),
+
+                          fixedSize: MaterialStateProperty.all<Size>(
+                              const Size(100, 30)), // Minimum size
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(5.0), // Rounded corners
+                              side: const BorderSide(
+                                  color: Color(0xff6BC669),
+                                  width: 2.5), // Border
+                            ),
+                          ),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'No',
+                            style: TextStyle(
+                                fontFamily: 'Nexa',
+                                fontSize: 18,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white),
+                          ),
+                        )),
+                  ),
+                ],
+              ),
+            ],
+          );
+        });
+  }
+
+// This method shows pop up to add a tag for adding an item to the list
+  Future<dynamic> addfavouritepopup(BuildContext context, String stockname) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text(
+              'Add Tag',
+              style: TextStyle(
+                  fontFamily: 'Nexa',
+                  fontSize: 18,
+                  fontWeight: FontWeight.w900,
+                  color: Color.fromARGB(255, 58, 54, 54)),
+            ),
+            content: Text(
+              stockname,
+              style: const TextStyle(
+                  fontFamily: 'Nexa',
+                  fontSize: 17,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black),
+            ),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10, bottom: 20, right: 5, left: 10),
+                    child: TextButton(
+                        onPressed: () {
+                          // Add stockname to favourite list with buysell boolean value set to true = Buy
+                          favouritelist.add(stockname);
+                          favouritebuyselllist.add(false);
+                          Navigator.pop(context);
+                          _reloadPage();
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            const Color.fromARGB(255, 162, 11, 11),
+                          ),
+
+                          fixedSize: MaterialStateProperty.all<Size>(
+                              const Size(100, 30)), // Minimum size
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(5.0), // Rounded corners
+                              side: const BorderSide(
+                                  color: Color.fromARGB(177, 186, 44, 44),
+                                  width: 2.5), // Border
+                            ),
+                          ),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Sell',
+                            style: TextStyle(
+                                fontFamily: 'Nexa',
+                                fontSize: 18,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white),
+                          ),
+                        )),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10, bottom: 20, right: 10, left: 5),
+                    child: TextButton(
+                        onPressed: () {
+                          // Add stockname to favourite list with buysell boolean value set to false = Sell
+                          favouritelist.add(stockname);
+                          favouritebuyselllist.add(false);
+                          Navigator.pop(context);
+                          _reloadPage();
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              const Color.fromARGB(255, 4, 149, 1)),
+
+                          fixedSize: MaterialStateProperty.all<Size>(
+                              const Size(100, 30)), // Minimum size
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(5.0), // Rounded corners
+                              side: const BorderSide(
+                                  color: Color(0xff6BC669),
+                                  width: 2.5), // Border
+                            ),
+                          ),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Buy',
+                            style: TextStyle(
+                                fontFamily: 'Nexa',
+                                fontSize: 18,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white),
+                          ),
+                        )),
+                  ),
+                ],
+              ),
+            ],
+          );
+        });
   }
 }
