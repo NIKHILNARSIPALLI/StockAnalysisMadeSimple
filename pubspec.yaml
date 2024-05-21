@@ -39,6 +39,7 @@ dependencies:
   dropdown_search: ^5.0.6
   flutter_svg:
   feather_icons_svg: ^0.4.0
+  get: ^4.6.6
 
 dev_dependencies:
   flutter_test:

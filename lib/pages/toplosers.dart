@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stock_analysis/pages/homepage.dart';
+import 'package:stock_analysis/pages/topgainers.dart';
 
 class toplosers extends StatelessWidget {
   const toplosers({super.key});
@@ -7,7 +7,7 @@ class toplosers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      appBar: homeAppBar(),
+      appBar: TOPGAINERAPPBAR(),
     );
   }
 }

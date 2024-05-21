@@ -1,0 +1,1 @@
+ /Users/nikhilnarsipalli/Documents/UNIVERSITY/Projects/GIT\ HUB/Stock\ Analysis\ Made\ Simple\ Repo/Main\ Branch/StockAnalysisMadeSimple/.dart_tool/flutter_build/804eae8f097c8603ae2f678a569f7ef1/native_assets.yaml: 

@@ -2,6 +2,14 @@
 
 bool marketisonline = true;
 
+List<List<String>> topgainerslist = [
+  ['Lorem Ipsum', '123', '456'],
+  ['Lorem Ipsum', '123', '456'],
+  ['Lorem Ipsum', '123', '456'],
+  ['Lorem Ipsum', '123', '456'],
+  ['Lorem Ipsum', '123', '456']
+];
+
 List<dynamic> favouritelist = [
   'Suzlon Energy',
   'Pennar Industries',
@@ -34,4 +42,12 @@ List<String> blockdeapvalues = [
   '+ 60,000',
   '+ 1,40,000',
   '- 4,15,000'
+];
+
+List<String> allstocks = [
+  'Suzlon Energy-SUZLON',
+  'Pennar Industries-PENIND',
+  'Titagrah Railways-TITAGARH',
+  'Housing And Urban Development Corp Ltd-HUDCO',
+  'MediaAlpha Inc-Max'
 ];
