@@ -18,6 +18,7 @@ List<dynamic> favouritelist = [
   'Max'
 ];
 
+// true -> Buy, false -> Sell
 List<dynamic> favouritebuyselllist = [
   true,
   false,

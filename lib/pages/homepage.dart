@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types, sized_box_for_whitespace, collection_methods_unrelated_type, avoid_print, must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stock_analysis/pages/Search.dart';
 import 'package:stock_analysis/pages/topgainers.dart';
@@ -160,28 +161,17 @@ class favouritestab extends StatefulWidget {
 }
 
 class _favouritestabState extends State<favouritestab> {
-  void removeItem(int index) {
-    setState(() {
-      if (index >= 0 && index < favouritebuyselllist.length) {
-        favouritebuyselllist.removeAt(index);
-        print('Item at buysell index $index removed successfully');
-      } else {
-        print('Invalid buysell index: $index');
-      }
-      if (index >= 0 && index < favouritelist.length) {
-        favouritelist.removeAt(index);
-        print('Item at index $index removed successfully');
-      } else {
-        print('Invalid index: $index');
-      }
-    });
-  }
-
   bool isExpanded = false;
 
   void toggleShowAllItems() {
     setState(() {
       isExpanded = !isExpanded;
+    });
+  }
+
+  void _reloadhomePage() {
+    setState(() {
+      // No state variables are changed, just calling setState to trigger a rebuild
     });
   }
 
@@ -220,11 +210,19 @@ class _favouritestabState extends State<favouritestab> {
                 SizedBox(
                   width: 234,
                 ),
-                SvgPicture.asset(
-                  'assets/icons/plus-icon.svg',
-                  width: 20.09,
-                  height: 20.05,
-                  color: Color(0xff16A512),
+                GestureDetector(
+                  onTap: () async {
+                    // Here using async and await to reload the homepage when coming back
+                    await Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => SearchPage()));
+                    _reloadhomePage();
+                  },
+                  child: SvgPicture.asset(
+                    'assets/icons/plus-icon.svg',
+                    width: 20.09,
+                    height: 20.05,
+                    color: Color(0xff16A512),
+                  ),
                 )
               ],
             ),
@@ -260,7 +258,13 @@ class _favouritestabState extends State<favouritestab> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            favouritelist[index],
+                                            // If the text is more than 29 lengths long, skip the rest by showing '...'
+                                            favouritelist[index].length > 29
+                                                ? favouritelist[index]
+                                                        .substring(0, 29) +
+                                                    '...'
+                                                : favouritelist[index],
+
                                             style: TextStyle(
                                                 fontFamily: 'Nexa',
                                                 fontWeight: FontWeight.w900,
@@ -283,8 +287,8 @@ class _favouritestabState extends State<favouritestab> {
                                               ),
                                               Text(
                                                 favouritebuyselllist[index]
-                                                    ? 'BUY'
-                                                    : 'SELL',
+                                                    ? 'SELL'
+                                                    : 'BUY',
                                                 style: TextStyle(
                                                     fontFamily: 'Nexa',
                                                     fontWeight: FontWeight.w200,
@@ -300,7 +304,8 @@ class _favouritestabState extends State<favouritestab> {
                                       padding: const EdgeInsets.only(right: 32),
                                       child: GestureDetector(
                                         onTap: () {
-                                          removeItem(index);
+                                          removefavouritepopuphomepage(
+                                              context, favouritelist[index]);
                                         },
                                         child: Text(
                                           'Remove',
@@ -372,6 +377,117 @@ class _favouritestabState extends State<favouritestab> {
         ],
       ),
     );
+  }
+
+// This method shows pop up confirmation to remove an item from favourite list
+  Future<dynamic> removefavouritepopuphomepage(
+      BuildContext context, String stockname) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text(
+              'Remove Favourite ?',
+              style: TextStyle(
+                  fontFamily: 'Nexa',
+                  fontSize: 18,
+                  fontWeight: FontWeight.w900,
+                  color: Color.fromARGB(255, 58, 54, 54)),
+            ),
+            content: Text(
+              stockname,
+              style: const TextStyle(
+                  fontFamily: 'Nexa',
+                  fontSize: 17,
+                  fontWeight: FontWeight.w200,
+                  color: Colors.black),
+            ),
+            actions: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10, bottom: 20, right: 15, left: 10),
+                    child: TextButton(
+                        onPressed: () {
+                          // Removing favouritelist item and its corresponding buysell tag list
+                          int removeindex = favouritelist.indexOf(stockname);
+                          favouritelist.removeAt(removeindex);
+                          favouritebuyselllist.removeAt(removeindex);
+                          Navigator.pop(context);
+                          _reloadhomePage();
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            const Color.fromARGB(255, 162, 11, 11),
+                          ),
+
+                          fixedSize: MaterialStateProperty.all<Size>(
+                              const Size(100, 30)), // Minimum size
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(5.0), // Rounded corners
+                              side: const BorderSide(
+                                  color: Color.fromARGB(177, 186, 44, 44),
+                                  width: 2.5), // Border
+                            ),
+                          ),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Yes',
+                            style: TextStyle(
+                                fontFamily: 'Nexa',
+                                fontSize: 18,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white),
+                          ),
+                        )),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10, bottom: 20, right: 10, left: 15),
+                    child: TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              const Color.fromARGB(255, 4, 149, 1)),
+
+                          fixedSize: MaterialStateProperty.all<Size>(
+                              const Size(100, 30)), // Minimum size
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(5.0), // Rounded corners
+                              side: const BorderSide(
+                                  color: Color(0xff6BC669),
+                                  width: 2.5), // Border
+                            ),
+                          ),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'No',
+                            style: TextStyle(
+                                fontFamily: 'Nexa',
+                                fontSize: 18,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.white),
+                          ),
+                        )),
+                  ),
+                ],
+              ),
+            ],
+          );
+        });
   }
 }
 

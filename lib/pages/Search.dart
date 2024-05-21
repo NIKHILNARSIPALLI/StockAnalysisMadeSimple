@@ -30,19 +30,6 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  void toggleFavorite(String item) {
-    setState(() {
-      int removeindex = favouritelist.indexOf(item);
-      if (favouritelist.contains(item)) {
-        favouritelist.remove(item);
-        favouritebuyselllist.removeAt(removeindex);
-        // Remove item if already in the list
-      } else {
-        favouritelist.add(item); // Add item if not in the list
-      }
-    });
-  }
-
   void _reloadPage() {
     setState(() {
       // No state variables are changed, just calling setState to trigger a rebuild
@@ -239,7 +226,7 @@ class _SearchPageState extends State<SearchPage> {
                         onPressed: () {
                           // Add stockname to favourite list with buysell boolean value set to true = Buy
                           favouritelist.add(stockname);
-                          favouritebuyselllist.add(false);
+                          favouritebuyselllist.add(true);
                           Navigator.pop(context);
                           _reloadPage();
                         },
