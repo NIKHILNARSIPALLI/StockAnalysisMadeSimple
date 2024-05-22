@@ -15,17 +15,11 @@ List<dynamic> favouritelist = [
   'Pennar Industries',
   'Titagrah Railways',
   'HUDCO',
-  'Max'
+  'Max',
 ];
 
 // true -> Buy, false -> Sell
-List<dynamic> favouritebuyselllist = [
-  true,
-  false,
-  true,
-  true,
-  false,
-];
+List<dynamic> favouritebuyselllist = [true, false, true, true, false];
 
 List<String> blockdealsnames = [
   'Jinadel Saw Limited',
@@ -42,7 +36,7 @@ List<String> blockdeapvalues = [
   '+ 15,000',
   '+ 60,000',
   '+ 1,40,000',
-  '- 4,15,000'
+  '- 4,15,000',
 ];
 
 List<String> allstocks = [
@@ -50,5 +44,5 @@ List<String> allstocks = [
   'Pennar Industries-PENIND',
   'Titagrah Railways-TITAGARH',
   'Housing And Urban Development Corp Ltd-HUDCO',
-  'MediaAlpha Inc-Max'
+  'MediaAlpha Inc-Max',
 ];
