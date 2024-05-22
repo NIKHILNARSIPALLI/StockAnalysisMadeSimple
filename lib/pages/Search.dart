@@ -224,9 +224,9 @@ class _SearchPageState extends State<SearchPage> {
                         top: 10, bottom: 20, right: 5, left: 10),
                     child: TextButton(
                         onPressed: () {
-                          // Add stockname to favourite list with buysell boolean value set to true = Buy
+                          // Add stockname to favourite list with buysell boolean value set to false = SELL
                           favouritelist.add(stockname);
-                          favouritebuyselllist.add(true);
+                          favouritebuyselllist.add(false);
                           Navigator.pop(context);
                           _reloadPage();
                         },
@@ -264,9 +264,9 @@ class _SearchPageState extends State<SearchPage> {
                         top: 10, bottom: 20, right: 10, left: 5),
                     child: TextButton(
                         onPressed: () {
-                          // Add stockname to favourite list with buysell boolean value set to false = Sell
+                          // Add stockname to favourite list with buysell boolean value set to true = Buy
                           favouritelist.add(stockname);
-                          favouritebuyselllist.add(false);
+                          favouritebuyselllist.add(true);
                           Navigator.pop(context);
                           _reloadPage();
                         },

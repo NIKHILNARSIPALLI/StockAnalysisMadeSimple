@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types, sized_box_for_whitespace, collection_methods_unrelated_type, avoid_print, must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stock_analysis/pages/Search.dart';
 import 'package:stock_analysis/pages/topgainers.dart';
@@ -45,12 +44,19 @@ class _myHomePageState extends State<myHomePage> {
     );
   }
 
-  searchBarOnTap() {
-    Navigator.of(context).push(
+  void _reloadthehomePage() {
+    setState(() {
+      // No state variables are changed, just calling setState to trigger a rebuild
+    });
+  }
+
+  Future<void> searchBarOnTap() async {
+    await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => SearchPage(),
       ),
     );
+    _reloadthehomePage(); // Assuming _reloadpage is a function defined in the same class or accessible from this scope
   }
 }
 
@@ -287,8 +293,8 @@ class _favouritestabState extends State<favouritestab> {
                                               ),
                                               Text(
                                                 favouritebuyselllist[index]
-                                                    ? 'SELL'
-                                                    : 'BUY',
+                                                    ? 'BUY'
+                                                    : 'SELL',
                                                 style: TextStyle(
                                                     fontFamily: 'Nexa',
                                                     fontWeight: FontWeight.w200,
