@@ -184,11 +184,15 @@ class _favouritestabState extends State<favouritestab> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      //double ExpandableBoxHeight = isExpanded ? 290 :
-
       height: favouritelist.isNotEmpty
-          ? (isExpanded ? (favouritelist.length * 65 + 48) : 290)
-          : 150,
+          ? (isExpanded // If empty we want to check if it is expanded or not
+              ? (favouritelist.length * 65 +
+                  48) // If expanded we want to take space for no.cotent
+              : min(
+                  290,
+                  favouritelist.length * 65 +
+                      48)) // If not expanded we want to show only 4 or less (based on availability)
+          : 150, // if empty
       width: 373,
       decoration: BoxDecoration(
         color: Colors.white,
