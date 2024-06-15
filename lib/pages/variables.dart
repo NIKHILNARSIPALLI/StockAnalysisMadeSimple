@@ -45,4 +45,6 @@ List<String> allstocks = [
   'Titagrah Railways-TITAGARH',
   'Housing And Urban Development Corp Ltd-HUDCO',
   'MediaAlpha Inc-Max',
+  'HDFC BANK-HDFCBANK',
+  'ICICI BANK-ICICIBANK'
 ];

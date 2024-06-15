@@ -12,6 +12,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-        title: 'Stock Analysis Made Simple', home: Splash());
+        debugShowCheckedModeBanner: false,
+        title: 'Stock Analysis Made Simple',
+        home: Splash());
   }
 }
