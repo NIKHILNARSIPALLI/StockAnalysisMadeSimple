@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, camel_case_types, sized_box_for_whitespace, collection_methods_unrelated_type, avoid_print, must_be_immutable
+// ignore_for_file: prefer_const_constructors, camel_case_types, sized_box_for_whitespace, collection_methods_unrelated_type, avoid_print, must_be_immutable, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -184,7 +184,11 @@ class _favouritestabState extends State<favouritestab> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: favouritelist.isNotEmpty ? 290 : 150,
+      //double ExpandableBoxHeight = isExpanded ? 290 :
+
+      height: favouritelist.isNotEmpty
+          ? (isExpanded ? (favouritelist.length * 65 + 48) : 290)
+          : 150,
       width: 373,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -240,6 +244,7 @@ class _favouritestabState extends State<favouritestab> {
               ? Expanded(
                   child: ListView.builder(
                       shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: isExpanded
                           ? favouritelist.length
                           : min(4, favouritelist.length),
